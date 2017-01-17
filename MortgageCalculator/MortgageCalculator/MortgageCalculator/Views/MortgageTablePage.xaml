@@ -1,0 +1,54 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewModel="clr-namespace:MortgageCalculator.ViewModels;assembly=MortgageCalculator"
+             xmlns:dataGrid="clr-namespace:DevExpress.Mobile.DataGrid;assembly=DevExpress.Mobile.Grid.v16.1"
+             x:Class="MortgageCalculator.Views.MortgageTablePage">
+
+  <ContentPage.Padding>
+    <OnPlatform x:TypeArguments="Thickness" iOS="0,20,0,0" Android="0,0,0,0" />
+  </ContentPage.Padding>
+
+  <ContentPage.Content>
+    <ScrollView>
+
+      <OnPlatform x:TypeArguments="View">
+        <OnPlatform.iOS>
+          <dataGrid:GridControl ItemsSource="{Binding Mortgages}" ColumnsAutoWidth="False" RowHeight="20" EndRowEdit="Grid_OnEndRowEdit" >
+            <dataGrid:GridControl.Columns>
+              <dataGrid:TextColumn FieldName="No" IsReadOnly="True" FixedStyle="Left" Width="35" />
+              <dataGrid:DateColumn FieldName="DueDate" IsReadOnly="True" Width="75" />
+              <dataGrid:NumberColumn FieldName="Payment" IsReadOnly="True" DisplayFormat="C0" Width="75" />
+              <dataGrid:NumberColumn FieldName="ExtraPayments" Caption="Extra Payments" DisplayFormat="C0" IsReadOnly="True" Width="60" />
+              <dataGrid:NumberColumn FieldName="AdditionalPayment" Caption="Additional Payment" DisplayFormat="C0" Width="60" />
+              <dataGrid:NumberColumn FieldName="Interest" IsReadOnly="True" DisplayFormat="C0" Width="75" />
+              <dataGrid:NumberColumn FieldName="Principal" IsReadOnly="True" DisplayFormat="C0" Width="75" />
+              <dataGrid:NumberColumn FieldName="Balance" IsReadOnly="True" FixedStyle="Right" DisplayFormat="C0" Width="75" />
+            </dataGrid:GridControl.Columns>
+          </dataGrid:GridControl>
+        </OnPlatform.iOS>
+
+        <OnPlatform.Android>
+          <dataGrid:GridControl ItemsSource="{Binding Mortgages}" ColumnsAutoWidth="False" RowHeight="20" EndRowEdit="Grid_OnEndRowEdit" >
+            <dataGrid:GridControl.Columns>
+              <dataGrid:TextColumn FieldName="No" IsReadOnly="True" FixedStyle="Left" Width="35" />
+              <dataGrid:DateColumn FieldName="DueDate" IsReadOnly="True" Width="75" />
+              <dataGrid:NumberColumn FieldName="Payment" IsReadOnly="True" DisplayFormat="C0" Width="75" />
+              <dataGrid:NumberColumn FieldName="ExtraPayments" Caption="Extra Payments" DisplayFormat="C0" IsReadOnly="True" Width="60" />
+              <dataGrid:NumberColumn FieldName="AdditionalPayment" Caption="Additional Payment" DisplayFormat="C0" Width="60" />
+              <dataGrid:NumberColumn FieldName="Interest" IsReadOnly="True" DisplayFormat="C0" Width="75" />
+              <dataGrid:NumberColumn FieldName="Principal" IsReadOnly="True" DisplayFormat="C0" Width="75" />
+              <dataGrid:NumberColumn FieldName="Balance" IsReadOnly="True" FixedStyle="Right" DisplayFormat="C0" Width="75" />
+            </dataGrid:GridControl.Columns>
+          </dataGrid:GridControl>
+        </OnPlatform.Android>
+
+        <OnPlatform.WinPhone>
+          <Label Text="Windows device does not support grid" HorizontalOptions="Center" VerticalOptions="Center" />
+        </OnPlatform.WinPhone>
+      </OnPlatform>
+
+    </ScrollView>
+
+  </ContentPage.Content>
+</ContentPage>

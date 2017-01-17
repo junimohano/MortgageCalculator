@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MortgageCalculator.Views.MortgageGuidePage">
+
+  <ContentPage.Padding>
+    <OnPlatform x:TypeArguments="Thickness" iOS="0,20,0,0" Android="0,0,0,0" />
+  </ContentPage.Padding>
+
+  <ContentPage.Content>
+    <ScrollView>
+      <StackLayout Orientation="Vertical">
+        <Label Margin="10,10,10,10" FontSize="16" Text="This spreadsheet creates an amortization schedule for a fixed-rate Canadian mortgage loan, with optional extra payments. Use the spreadsheet to compare different amortization periods, rates, and loan amounts. The compound period for a Canadian mortgage is semi-annual, but this calculator can also be used for US mortgage calculations by changing the compound period to monthly - the main difference between a US and Canadian mortgage. This spreadsheet also calculates the outstanding balance at the end of a specified term. It assumes that the rate at renewal is the same as the original mortgage rate, but this will likely not be the case. At the start of the next term, create a new spreadsheet based on the new mortgage rate and amortization period."/>
+        
+        <Label Margin="10,10,10,10" FontSize="14" Text="The payment and the interest are rounded to the nearest cent. The last payment is adjusted to bring the balance to zero."/>
+      </StackLayout>
+    </ScrollView>
+  </ContentPage.Content>
+</ContentPage>

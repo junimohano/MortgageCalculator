@@ -1,0 +1,303 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewModel="clr-namespace:MortgageCalculator.ViewModels;assembly=MortgageCalculator"
+             xmlns:customRenderers="clr-namespace:MortgageCalculator.CustomRenderers;assembly=MortgageCalculator"
+             x:Class="MortgageCalculator.Views.MortgagePage">
+
+<!--  <ContentPage.BindingContext>-->
+<!--    <viewModel:MortgagePageViewModel/>-->
+<!--  </ContentPage.BindingContext>-->
+
+  <ContentPage.Padding>
+    <OnPlatform x:TypeArguments="Thickness" iOS="0,20,0,0" Android="0,0,0,0" />
+  </ContentPage.Padding>
+
+  <ContentPage.Resources>
+    <ResourceDictionary>
+
+      <Style x:Key="BaseLabelStyle" TargetType="View">
+        <Setter Property="HorizontalOptions" Value="Center" />
+        <Setter Property="VerticalOptions" Value="Center" />
+      </Style>
+
+      <Thickness x:Key="MarginView" Left="10" Top="0" Right="0" Bottom="0" />
+
+      <Style x:Key="LabelStyle" TargetType="Label" BasedOn="{StaticResource BaseLabelStyle}">
+        <!--<Setter Property="TextColor" Value="White" />-->
+        <Setter Property="FontSize" Value="Small" />
+        <Setter Property="Margin" Value="{StaticResource MarginView}" />
+        <Setter Property="WidthRequest" Value="200" />
+        <!--<Setter Property="BorderColor" Value="Blue" />
+        <Setter Property="BorderWidth" Value="2" />-->
+      </Style>
+
+      <Style x:Key="BaseEditStyle" TargetType="View">
+        <Setter Property="HorizontalOptions" Value="FillAndExpand" />
+        <Setter Property="VerticalOptions" Value="End" />
+      </Style>
+
+      <Thickness x:Key="MarginEntry" Left="0" Top="0" Right="0" >
+        <Thickness.Bottom>
+          <OnPlatform x:TypeArguments="x:Double" iOS="0" Android="-5" WinPhone="0" />
+        </Thickness.Bottom>
+      </Thickness>
+
+      <Style x:Key="EntryStyle" TargetType="Entry" BasedOn="{StaticResource BaseEditStyle}">
+        <Setter Property="FontSize" Value="Small" />
+        <Setter Property="HorizontalTextAlignment" Value="Start" />
+        <Setter Property="Margin" Value="{StaticResource MarginEntry}" />
+      </Style>
+
+      <Style x:Key="DatePickerStyle" TargetType="customRenderers:CustomDatePicker" BasedOn="{StaticResource BaseEditStyle}">
+        <Setter Property="FontSize" Value="14" />
+        <Setter Property="Margin" Value="{StaticResource MarginEntry}" />
+      </Style>
+
+      <Style x:Key="PickerStyle" TargetType="customRenderers:CustomPicker" BasedOn="{StaticResource BaseEditStyle}">
+        <Setter Property="FontSize" Value="14" />
+        <Setter Property="Margin" Value="{StaticResource MarginEntry}" />
+      </Style>
+
+    </ResourceDictionary>
+  </ContentPage.Resources>
+
+  <ContentPage.Content>
+    <ScrollView>
+      <RelativeLayout
+          VerticalOptions="FillAndExpand"
+          HorizontalOptions="FillAndExpand">
+
+        <StackLayout Orientation="Vertical" VerticalOptions="FillAndExpand"
+                     RelativeLayout.XConstraint="{ConstraintExpression Type=Constant, Constant=0}"
+                     RelativeLayout.YConstraint="{ConstraintExpression Type=Constant, Constant=0}">
+
+          <TableView RowHeight="30" HeightRequest="900" >
+            <TableRoot>
+              <TableSection Title="Inputs">
+                <ViewCell>
+                  <StackLayout Orientation="Horizontal">
+                    <Label Text="Loan Amount ($)" Style="{StaticResource LabelStyle}"/>
+                    <Entry Text="{Binding LoanAmount}" Style="{StaticResource EntryStyle}" Keyboard="Numeric" />
+                  </StackLayout>
+                </ViewCell>
+
+                <ViewCell>
+                  <StackLayout Orientation="Horizontal">
+                    <Label Text="Canadian Mortgage Rate (%)" Style="{StaticResource LabelStyle}"/>
+                    <Entry Text="{Binding CanadianMortgageRate}" Style="{StaticResource EntryStyle}" Keyboard="Numeric" />
+                  </StackLayout>
+                </ViewCell>
+
+                <ViewCell>
+                  <StackLayout Orientation="Horizontal">
+                    <Label Text="Compound Period" Style="{StaticResource LabelStyle}"></Label>
+                    <customRenderers:CustomPicker x:Name="PickerCompoundPeriod" SelectedIndex="{Binding CompoundPeriodIndex}" Style="{StaticResource PickerStyle}" />
+                  </StackLayout>
+                </ViewCell>
+
+                <ViewCell>
+                  <StackLayout Orientation="Horizontal">
+                    <Label Text="Amortization Period (in years)" Style="{StaticResource LabelStyle}"></Label>
+                    <Entry Text="{Binding AmortizationPeriod}" Style="{StaticResource EntryStyle}" Keyboard="Numeric" />
+                  </StackLayout>
+                </ViewCell>
+
+                <ViewCell>
+                  <StackLayout Orientation="Horizontal">
+                    <Label Text="Term (in years)" Style="{StaticResource LabelStyle}"></Label>
+                    <Entry Text="{Binding Term}" Style="{StaticResource EntryStyle}" Keyboard="Numeric" />
+                  </StackLayout>
+                </ViewCell>
+
+                <ViewCell>
+                  <StackLayout Orientation="Horizontal">
+                    <Label Text="FirstPayment Date" Style="{StaticResource LabelStyle}"></Label>
+                    <customRenderers:CustomDatePicker Date="{Binding FirstPaymentDate}" Format="yyyy-MM-dd" Style="{StaticResource DatePickerStyle}" />
+                  </StackLayout>
+                </ViewCell>
+
+                <ViewCell>
+                  <StackLayout Orientation="Horizontal">
+                    <Label Text="Payment Frequency" Style="{StaticResource LabelStyle}"></Label>
+                    <customRenderers:CustomPicker x:Name="PickerPaymentFrequency" SelectedIndex="{Binding PaymentFrequencyIndex}" Style="{StaticResource PickerStyle}" />
+                  </StackLayout>
+                </ViewCell>
+
+                <ViewCell>
+                  <StackLayout Orientation="Horizontal">
+                    <Label Text="Payment" Style="{StaticResource LabelStyle}"></Label>
+                    <Entry IsEnabled="False" Text="{Binding Payment, StringFormat='{0:C}'}" Style="{StaticResource EntryStyle}"/>
+                  </StackLayout>
+                </ViewCell>
+              </TableSection>
+
+              <TableSection Title="Extra Payments (Prepayments)">
+                <ViewCell>
+                  <StackLayout Orientation="Horizontal">
+                    <Label Text="Extra Payment ($)" Style="{StaticResource LabelStyle}"></Label>
+                    <Entry Text="{Binding ExtraPayment}" Style="{StaticResource EntryStyle}" Keyboard="Numeric" />
+                  </StackLayout>
+                </ViewCell>
+
+                <ViewCell>
+                  <StackLayout Orientation="Horizontal">
+                    <Label Text="Payment Interval" Style="{StaticResource LabelStyle}"></Label>
+                    <Entry Text="{Binding PaymentInterval}" Style="{StaticResource EntryStyle}" Keyboard="Numeric" />
+                  </StackLayout>
+                </ViewCell>
+
+                <ViewCell>
+                  <StackLayout Orientation="Horizontal">
+                    <Label Text="Extra Annual Payment ($)" Style="{StaticResource LabelStyle}"></Label>
+                    <Entry Text="{Binding ExtraAnnualPayment}" Style="{StaticResource EntryStyle}" Keyboard="Numeric" />
+                  </StackLayout>
+                </ViewCell>
+              </TableSection>
+
+              <TableSection Title="Fully Amortized">
+                <ViewCell>
+                  <StackLayout Orientation="Horizontal">
+                    <Label Text="Interest Rate (per payment)" Style="{StaticResource LabelStyle}"></Label>
+                    <Entry IsEnabled="False" Text="{Binding InterestRate, StringFormat='{0:P}'}" Style="{StaticResource EntryStyle}"/>
+                  </StackLayout>
+                </ViewCell>
+
+                <ViewCell>
+                  <StackLayout Orientation="Horizontal">
+                    <Label Text="Total Payments" Style="{StaticResource LabelStyle}"></Label>
+                    <Entry IsEnabled="False" Text="{Binding TotalPayments, StringFormat='{0:C}'}" Style="{StaticResource EntryStyle}" />
+                  </StackLayout>
+                </ViewCell>
+
+                <ViewCell>
+                  <StackLayout Orientation="Horizontal">
+                    <Label Text="Total Interest" Style="{StaticResource LabelStyle}"></Label>
+                    <Entry IsEnabled="False" Text="{Binding TotalInterest, StringFormat='{0:C}'}" Style="{StaticResource EntryStyle}" />
+                  </StackLayout>
+                </ViewCell>
+
+                <ViewCell>
+                  <StackLayout Orientation="Horizontal">
+                    <Label Text="Number of Payments" Style="{StaticResource LabelStyle}"></Label>
+                    <Entry IsEnabled="False" Text="{Binding NumberOfPayments}" Style="{StaticResource EntryStyle}" />
+                    <Entry IsEnabled="False" Text="{Binding NumberOfPaymentsYears, StringFormat='({0} years)'}" Style="{StaticResource EntryStyle}" />
+                  </StackLayout>
+                </ViewCell>
+
+                <ViewCell>
+                  <StackLayout Orientation="Horizontal">
+                    <Label Text="Last Payment Date" Style="{StaticResource LabelStyle}"></Label>
+                    <customRenderers:CustomDatePicker Date="{Binding LastPaymentDate}" Format="yyyy-MM-dd" IsEnabled="False" Style="{StaticResource DatePickerStyle}"></customRenderers:CustomDatePicker>
+                  </StackLayout>
+                </ViewCell>
+
+                <ViewCell>
+                  <StackLayout Orientation="Horizontal">
+                    <Label Text="Interest Savings" Style="{StaticResource LabelStyle}"></Label>
+                    <Entry IsEnabled="False" Text="{Binding InterestSavings, StringFormat='{0:C}'}" Style="{StaticResource EntryStyle}" />
+                  </StackLayout>
+                </ViewCell>
+              </TableSection>
+
+              <TableSection Title="Balance at Term">
+                <ViewCell>
+                  <StackLayout Orientation="Horizontal">
+                    <Label Text="Date at Term" Style="{StaticResource LabelStyle}"></Label>
+                    <customRenderers:CustomDatePicker Date="{Binding DateAtTerm}" Format="yyyy-MM-dd" IsEnabled="False" Style="{StaticResource DatePickerStyle}"></customRenderers:CustomDatePicker>
+                  </StackLayout>
+                </ViewCell>
+
+                <ViewCell>
+                  <StackLayout Orientation="Horizontal">
+                    <Label Text="Interest Paid" Style="{StaticResource LabelStyle}"></Label>
+                    <Entry IsEnabled="False" Text="{Binding InterestPaid, StringFormat='{0:C}'}" Style="{StaticResource EntryStyle}" />
+                  </StackLayout>
+                </ViewCell>
+
+                <ViewCell>
+                  <StackLayout Orientation="Horizontal">
+                    <Label Text="Principal Paid" Style="{StaticResource LabelStyle}"></Label>
+                    <Entry IsEnabled="False" Text="{Binding PrincipalPaid, StringFormat='{0:C}'}" Style="{StaticResource EntryStyle}" />
+                  </StackLayout>
+                </ViewCell>
+
+                <ViewCell>
+                  <StackLayout Orientation="Horizontal">
+                    <Label Text="Outstanding Balance" Style="{StaticResource LabelStyle}"></Label>
+                    <Entry IsEnabled="False" Text="{Binding OutstandingBalance, StringFormat='{0:C}'}" Style="{StaticResource EntryStyle}" />
+                  </StackLayout>
+                </ViewCell>
+              </TableSection>
+
+              <TableSection Title="Totals Assuming No Extra Payments">
+                <ViewCell>
+                  <StackLayout Orientation="Horizontal">
+                    <Label Text="Total Payments" Style="{StaticResource LabelStyle}"></Label>
+                    <Entry IsEnabled="False" Text="{Binding TotalPaymentsWithNoExtraPayment, StringFormat='{0:C}'}" Style="{StaticResource EntryStyle}" />
+                  </StackLayout>
+                </ViewCell>
+
+                <ViewCell>
+                  <StackLayout Orientation="Horizontal">
+                    <Label Text="Total Interest" Style="{StaticResource LabelStyle}"></Label>
+                    <Entry IsEnabled="False" Text="{Binding TotalInterestWithNoExtraPayment, StringFormat='{0:C}'}" Style="{StaticResource EntryStyle}" />
+                  </StackLayout>
+                </ViewCell>
+              </TableSection>
+
+            </TableRoot>
+          </TableView>
+
+          <!--<OnPlatform x:TypeArguments="View">
+            <OnPlatform.iOS>
+              <dataGrid:GridControl ItemsSource="{Binding Mortgages}" ColumnsAutoWidth="False" RowHeight="20" EndRowEdit="Grid_OnEndRowEdit" >
+                <dataGrid:GridControl.Columns>
+                  <dataGrid:TextColumn FieldName="No" IsReadOnly="True" FixedStyle="Left" Width="35" />
+                  <dataGrid:DateColumn FieldName="DueDate" IsReadOnly="True" Width="75" />
+                  <dataGrid:NumberColumn FieldName="Payment" IsReadOnly="True" DisplayFormat="C0" Width="75" />
+                  <dataGrid:NumberColumn FieldName="ExtraPayments" Caption="Extra Payments" DisplayFormat="C0" IsReadOnly="True" Width="60" />
+                  <dataGrid:NumberColumn FieldName="AdditionalPayment" Caption="Additional Payment" DisplayFormat="C0" Width="60" />
+                  <dataGrid:NumberColumn FieldName="Interest" IsReadOnly="True" DisplayFormat="C0" Width="75" />
+                  <dataGrid:NumberColumn FieldName="Principal" IsReadOnly="True" DisplayFormat="C0" Width="75" />
+                  <dataGrid:NumberColumn FieldName="Balance" IsReadOnly="True" FixedStyle="Right" DisplayFormat="C0" Width="75" />
+                </dataGrid:GridControl.Columns>
+              </dataGrid:GridControl>
+            </OnPlatform.iOS>
+
+            <OnPlatform.Android>
+              <dataGrid:GridControl ItemsSource="{Binding Mortgages}" ColumnsAutoWidth="False" RowHeight="20" EndRowEdit="Grid_OnEndRowEdit" >
+                <dataGrid:GridControl.Columns>
+                  <dataGrid:TextColumn FieldName="No" IsReadOnly="True" FixedStyle="Left" Width="35" />
+                  <dataGrid:DateColumn FieldName="DueDate" IsReadOnly="True" Width="75" />
+                  <dataGrid:NumberColumn FieldName="Payment" IsReadOnly="True" DisplayFormat="C0" Width="75" />
+                  <dataGrid:NumberColumn FieldName="ExtraPayments" Caption="Extra Payments" DisplayFormat="C0" IsReadOnly="True" Width="60" />
+                  <dataGrid:NumberColumn FieldName="AdditionalPayment" Caption="Additional Payment" DisplayFormat="C0" Width="60" />
+                  <dataGrid:NumberColumn FieldName="Interest" IsReadOnly="True" DisplayFormat="C0" Width="75" />
+                  <dataGrid:NumberColumn FieldName="Principal" IsReadOnly="True" DisplayFormat="C0" Width="75" />
+                  <dataGrid:NumberColumn FieldName="Balance" IsReadOnly="True" FixedStyle="Right" DisplayFormat="C0" Width="75" />
+                </dataGrid:GridControl.Columns>
+              </dataGrid:GridControl>
+            </OnPlatform.Android>
+
+            <OnPlatform.WinPhone>
+              <Label Text="Windows device does not support grid" HorizontalOptions="Center" VerticalOptions="Center" />
+            </OnPlatform.WinPhone>
+          </OnPlatform>-->
+
+        </StackLayout>
+
+        <ActivityIndicator IsVisible="{Binding IsBusy}"
+                           IsRunning="{Binding IsBusy}"
+                           VerticalOptions="CenterAndExpand"
+                           HorizontalOptions="CenterAndExpand"
+                           RelativeLayout.XConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=0.45}"
+                           RelativeLayout.YConstraint="{ConstraintExpression Type=Constant, Constant=0}" />
+
+      </RelativeLayout>
+
+    </ScrollView>
+
+
+  </ContentPage.Content>
+</ContentPage>
